@@ -1,8 +1,6 @@
 # Advanced Audio Deepfake/SingFake Generator using Multiple Variational Autoencoder (VAE) Variants
 ![Copy of APSIPA (8)](https://github.com/user-attachments/assets/d30043c0-af5b-4def-98b5-7304efaca6dd)
 
-# Audio Deepfake Generator using Variational Autoencoder (VAE)
-
 This project implements an end-to-end pipeline for generating deepfake audio using a Variational Autoencoder (VAE) trained on Mel spectrograms. The system processes audio data, trains a convolutional VAE, generates deepfake variations, and evaluates the results with visualizations and metrics.
 
 ## Features
