@@ -893,6 +893,6 @@ Files saved:
 - Adjust `height`, `width`, and other hyperparameters in `AudioDeepfakeGenerator` for different dataset requirements.
 - The code includes a reference to `KANLinear`, which is not defined in the provided code. Ensure compatibility or remove this reference if not using a custom KANLinear layer.
 
-## Acknowledgments
+## Mentions
 - The study has been submitted to the Special Session of Asia-Pacific Signal and Information Processing Association (APSIPA) 2025, Singapore, October 22nd–24th.
 - For any query, contact -> speechlab006.7@gmail.com 
