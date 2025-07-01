@@ -48,7 +48,8 @@ The code automatically detects and uses CUDA if available. Ensure CUDA is instal
    - **Audio Files**: Original and generated WAV files (e.g., `original_reference_improved.wav`, `high_quality_deepfake_X_noise_Y.wav`).
    - **Visualizations**: Plots of Mel spectrograms, training loss, and comparison between original and generated spectrograms.
 ## All codes are present in IPYND Folder
-![bbae818f-51d1-4273-9d8b-f68170f8176f](https://github.com/user-attachments/assets/e152066d-3bf9-4e75-a9b5-23ef94e869b0)
+![bbae818f-51d1-4273-9d8b-f68170f8176f](https://github.com/user-attachments/assets/27386a4e-acec-4803-8eca-2edb5ea7a2de)
+
 Now below is code snippet with all class
 ## Code Snippets
 ## RadialBasisFunction Class
