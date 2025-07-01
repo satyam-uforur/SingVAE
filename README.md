@@ -215,7 +215,15 @@ class KANLinear(nn.Module):
 ## Architecture Overview
 
 - **Encoder**: Transforms Mel spectrograms into a latent space using convolutional layers, with optional custom layers for enhanced variants. Outputs mean and log-variance for variational sampling.
+  
+![APSIPA (10) (1)](https://github.com/user-attachments/assets/fe88840f-6d61-46cd-a5b5-7262edc7b92a)
+
+
 - **Decoder**: Reconstructs spectrograms from the latent space using transposed convolutions, ensuring output matches the input shape.
+  
+![APSIPA (10)](https://github.com/user-attachments/assets/3928856d-4536-4963-9baf-27db826faa19)
+
+
 - **Bottleneck**: Compresses data into a latent representation (default 256 dimensions), enabling diverse deepfake generation via noise and KL divergence regularization.
 
 ImprovedAudioVAE Class (Base VAE)
@@ -335,9 +343,10 @@ class ImprovedAudioVAE(nn.Module):
         recon_x = self.decode(z)
         return recon_x, mu, logvar
 ```
-```python
+
 AudioProcessor Class
 Handles Mel spectrogram conversion and visualization.
+```python
 class AudioProcessor:
     def __init__(self, sr=22050, n_mels=128, n_fft=2048, hop_length=512):
         self.sr = sr
@@ -360,9 +369,10 @@ class AudioProcessor:
         plt.tight_layout()
         plt.show()
 ```
-```python
+
 AudioDataset Class
 PyTorch Dataset for loading Mel spectrograms.
+```python
 class AudioDataset(Dataset):
     def __init__(self, mel_spectrograms):
         self.mel_spectrograms = mel_spectrograms
