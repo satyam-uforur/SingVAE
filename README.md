@@ -1,54 +1,55 @@
 # Advanced Audio Deepfake/SingFake Generator using Multiple Variational Autoencoder (VAE) Variants
 ![Copy of APSIPA (8)](https://github.com/user-attachments/assets/d30043c0-af5b-4def-98b5-7304efaca6dd)
 
-This project implements an end-to-end pipeline for generating deepfake audio using a Variational Autoencoder (VAE) and its enhanced variants, including bsrbfkan-gelu-gated-vae, bsrbfkan-vae, chebyshevkanlinear-gelu-gated-vae, chebyshevkanlinear-vae, gelu-gated-vae, vae-simple, wavkan-gelu-gated-vae, and wavkan-vae, trained on Mel spectrograms. The system processes audio data, trains these models, generates deepfake variations, and evaluates the results with visualizations and metrics.
-Features
+# Audio Deepfake Generator using Variational Autoencoder (VAE)
 
-Audio Preprocessing: Converts audio files to Mel spectrograms with configurable parameters (sample rate, n_mels, n_fft, hop_length).
-VAE Models: Includes a standard VAE and enhanced variants with specialized layers for improved audio representation.
-Deepfake Generation: Generates high-quality deepfake audio by adding controlled noise in the latent space.
-Evaluation Metrics: Computes Mean Squared Error (MSE), Cosine Similarity, and Pearson Correlation between original and generated spectrograms.
-Visualization: Displays Mel spectrograms, training loss curves, and comparison plots for original vs. generated audio.
-Audio Output: Saves generated and original audio as WAV files using librosa and soundfile.
+This project implements an end-to-end pipeline for generating deepfake audio using a Variational Autoencoder (VAE) trained on Mel spectrograms. The system processes audio data, trains a convolutional VAE, generates deepfake variations, and evaluates the results with visualizations and metrics.
 
-Installation
-Prerequisites
+## Features
 
-Python 3.8+
-PyTorch (torch, torchvision, torchaudio)
-Additional libraries: librosa, soundfile, matplotlib, numpy, scikit-learn, tqdm, Pillow
+- **Audio Preprocessing**: Converts audio files to Mel spectrograms with configurable parameters (sample rate, n_mels, n_fft, hop_length).
+- **VAE Model**: A convolutional VAE with customizable architecture (filters, kernels, strides, latent dimension) for learning audio representations.
+- **Deepfake Generation**: Generates high-quality deepfake audio by adding controlled noise in the latent space.
+- **Evaluation Metrics**: Computes Mean Squared Error (MSE), Cosine Similarity, and Pearson Correlation between original and generated spectrograms.
+- **Visualization**: Displays Mel spectrograms, training loss curves, and comparison plots for original vs. generated audio.
+- **Audio Output**: Saves generated and original audio as WAV files using librosa and soundfile.
 
-Install Dependencies
+## Installation
+
+### Prerequisites
+- Python 3.8+
+- PyTorch (`torch`, `torchvision`, `torchaudio`)
+- Additional libraries: `librosa`, `soundfile`, `matplotlib`, `numpy`, `scikit-learn`, `tqdm`, `Pillow`
+
+### Install Dependencies
 Run the following command to install required libraries:
+```bash
 pip install torch torchvision torchaudio librosa soundfile matplotlib numpy scikit-learn tqdm Pillow
+```
 
-CUDA Configuration
-The code automatically detects and uses CUDA if available. Ensure CUDA is installed for GPU acceleration. The environment variable PYTORCH_CUDA_ALLOC_CONF is set to expandable_segments:True to optimize memory allocation.
-Usage
+### CUDA Configuration
+The code automatically detects and uses CUDA if available. Ensure CUDA is installed for GPU acceleration. The environment variable `PYTORCH_CUDA_ALLOC_CONF` is set to `expandable_segments:True` to optimize memory allocation.
 
-Prepare Data:
+## Usage
 
-Place Mel spectrogram images (PNG, JPG, JPEG) in a directory (e.g., /kaggle/input/vae128-ctrsdd/spec_128).
-Ensure spectrograms are grayscale and compatible with the target shape (default: 128x128).
+1. **Prepare Data**:
+   - Place Mel spectrogram images (PNG, JPG, JPEG) in a directory (e.g., `/kaggle/input/vae128-ctrsdd/spec_128`).
+   - Ensure spectrograms are grayscale and compatible with the target shape (default: 128x128).
 
+2. **Run the Script**:
+   - Execute the main script to process data, train the VAE, generate deepfakes, and evaluate results:
+     ```bash
+     python main.py
+     ```
+   - The script processes training, validation, and test sets, trains the VAE for up to 100 epochs, and generates deepfake audio for 11 test samples with configurable noise levels.
 
-Run the Script:
+3. **Output**:
+   - **Model Checkpoints**: Saved in the `models/` directory (`best_vae_model.pth`).
+   - **Audio Files**: Original and generated WAV files (e.g., `original_reference_improved.wav`, `high_quality_deepfake_X_noise_Y.wav`).
+   - **Visualizations**: Plots of Mel spectrograms, training loss, and comparison between original and generated spectrograms.
 
-Execute the main script (main.py) to process data, train the desired VAE variant, generate deepfakes, and evaluate results.
-Modify the script to select the specific VAE variant (e.g., bsrbfkan-gelu-gated-vae, vae-simple, etc.) by updating the model initialization.
-The script processes training, validation, and test sets, trains the models for up to 100 epochs, and generates deepfake audio for 11 test samples with configurable noise levels.
-
-
-Output:
-
-Model Checkpoints: Saved in the models/ directory (e.g., best_bsrbfkan_gelu_gated_vae.pth, etc.).
-Audio Files: Original and generated WAV files (e.g., original_reference_improved.wav, high_quality_deepfake_X_noise_Y.wav).
-Visualizations: Plots of Mel spectrograms, training loss curves, and comparison between original and generated spectrograms.
-
-
-
-Code Snippets
-RadialBasisFunction Class
+## Code Snippets
+## RadialBasisFunction Class
 Implements a radial basis function layer for BSRBFKANLinear.
 ```python
 class RadialBasisFunction(nn.Module):
@@ -61,7 +62,7 @@ class RadialBasisFunction(nn.Module):
         x = x.unsqueeze(-1)
         return torch.exp(-self.gamma * (x - self.centers) ** 2)
 ```
-BSRBFKANLinear Class
+## BSRBFKANLinear Class
 Combines B-splines and radial basis functions for enhanced linear transformation.
 ```python
 class BSRBFKANLinear(nn.Module):
@@ -104,7 +105,7 @@ class BSRBFKANLinear(nn.Module):
         nonlinear_out = F.linear(combined_basis, self.spline_weight)
         return base_out + nonlinear_out
 ```
-GeluGatedLayer Class
+## GeluGatedLayer Class
 Implements a GELU-activated gated layer for VAE enhancements.
 ```python
 class GeluGatedLayer(nn.Module):
@@ -117,7 +118,7 @@ class GeluGatedLayer(nn.Module):
         output = self.activation(self.input_linear(src))
         return output
 ```
-ChebyshevKANLinear Class
+## ChebyshevKANLinear Class
 Utilizes Chebyshev polynomials for advanced linear transformations with normalization.
 ```python
 class ChebyshevKANLinear(nn.Module):
@@ -160,7 +161,7 @@ class ChebyshevKANLinear(nn.Module):
             print("Warning: NaN detected in ChebyshevKANLinear output")
         return output
 ```
-WavKANLinear Class
+## WavKANLinear Class
 Implements a wavelet-based KAN linear layer with chunked processing.
 ```python
 class KANLinear(nn.Module):
@@ -226,7 +227,7 @@ class KANLinear(nn.Module):
 
 - **Bottleneck**: Compresses data into a latent representation (default 256 dimensions), enabling diverse deepfake generation via noise and KL divergence regularization.
 
-ImprovedAudioVAE Class (Base VAE)
+## ImprovedAudioVAE Class (Base VAE)
 Defines the base VAE architecture used across variants.
 ```python
 class ImprovedAudioVAE(nn.Module):
@@ -344,7 +345,7 @@ class ImprovedAudioVAE(nn.Module):
         return recon_x, mu, logvar
 ```
 
-AudioProcessor Class
+## AudioProcessor Class
 Handles Mel spectrogram conversion and visualization.
 ```python
 class AudioProcessor:
@@ -370,7 +371,7 @@ class AudioProcessor:
         plt.show()
 ```
 
-AudioDataset Class
+## AudioDataset Class
 PyTorch Dataset for loading Mel spectrograms.
 ```python
 class AudioDataset(Dataset):
@@ -384,7 +385,7 @@ class AudioDataset(Dataset):
         return torch.FloatTensor(self.mel_spectrograms[idx])
 ```
 
-AudioDeepfakeGenerator Class
+## AudioDeepfakeGenerator Class
 Orchestrates the full workflow for deepfake generation.
 ```python
 class AudioDeepfakeGenerator:
@@ -688,7 +689,7 @@ class AudioDeepfakeGenerator:
         print(f"Audio saved as: {filename}")
 ```
 
-Main Function
+## Main Function
 Orchestrates the workflow for data loading, training, and generation.
 ```python
 def get_image_files(directory):
@@ -889,9 +890,6 @@ Files saved:
 - The dataset directory (`/kaggle/input/vae128-ctrsdd/spec_128`) must contain valid spectrogram images.
 - Adjust `height`, `width`, and other hyperparameters in `AudioDeepfakeGenerator` for different dataset requirements.
 - The code includes a reference to `KANLinear`, which is not defined in the provided code. Ensure compatibility or remove this reference if not using a custom KANLinear layer.
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 - Built with PyTorch, librosa, and other open-source libraries.
