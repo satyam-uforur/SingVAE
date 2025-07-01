@@ -836,45 +836,44 @@ if __name__ == "__main__":
     main()
 ```
 
-Project Structure
+## Project Structure
 
-RadialBasisFunction: Implements radial basis functions for BSRBFKANLinear.
-BSRBFKANLinear: Combines B-splines and radial basis functions for enhanced linear transformations.
-GeluGatedLayer: Provides a GELU-activated gated layer for VAE enhancements.
-ChebyshevKANLinear: Utilizes Chebyshev polynomials for advanced transformations with normalization.
-WavKANLinear: Implements a wavelet-based KAN linear layer with chunked processing.
-ImprovedAudioVAE: Base VAE architecture with support for custom layers.
-AudioProcessor: Handles Mel spectrogram conversion and visualization.
-AudioDataset: PyTorch Dataset for loading Mel spectrograms.
-AudioDeepfakeGenerator: Main class orchestrating preprocessing, model training, deepfake generation, evaluation, and visualization.
-Main Function: Manages the workflow, including data loading, splitting, and execution of the pipeline for all VAE variants.
+- RadialBasisFunction: Implements radial basis functions for BSRBFKANLinear.
+- BSRBFKANLinear: Combines B-splines and radial basis functions for enhanced linear transformations.
+- GeluGatedLayer: Provides a GELU-activated gated layer for VAE enhancements.
+- ChebyshevKANLinear: Utilizes Chebyshev polynomials for advanced transformations with normalization.
+- WavKANLinear: Implements a wavelet-based KAN linear layer with chunked processing.
+- ImprovedAudioVAE: Base VAE architecture with support for custom layers.
+- AudioProcessor: Handles Mel spectrogram conversion and visualization.
+- AudioDataset: PyTorch Dataset for loading Mel spectrograms.
+- AudioDeepfakeGenerator: Main class orchestrating preprocessing, model training, deepfake generation, evaluation, and visualization.
+- Main Function: Manages the workflow, including data loading, splitting, and execution of the pipeline for all VAE variants.
 
-Training Configuration
 
-Epochs: 100 (with early stopping after 50 epochs of no improvement).
-Batch Size: 32
-Learning Rate: 5e-5
-KL Divergence Weight (β): 0.02
-Gradient Accumulation Steps: 32
-Latent Dimension: 256
-Dropout Rate: 0.3
+## Training Configuration
+- **Epochs**: 100 (with early stopping after 50 epochs of no improvement).
+- **Batch Size**: 32
+- **Learning Rate**: 5e-5
+- **KL Divergence Weight (β)**: 0.02
+- **Gradient Accumulation Steps**: 32
+- **Latent Dimension**: 256
+- **Dropout Rate**: 0.3
 
-Evaluation Metrics
+## Evaluation Metrics
 For each generated deepfake:
+- **Mean Squared Error (MSE)**: Measures pixel-wise differences.
+- **Cosine Similarity**: Assesses structural similarity.
+- **Pearson Correlation**: Evaluates linear correlation between spectrograms.
 
-Mean Squared Error (MSE): Measures pixel-wise differences.
-Cosine Similarity: Assesses structural similarity.
-Pearson Correlation: Evaluates linear correlation between spectrograms.
-
-Example Output
-Running bsrbfkan-gelu-gated-vae pipeline...
-Step 1: Processing training mel spectrograms...
+## Example Output
+```plaintext
+Step 1:iksi Processing training mel spectrograms...
 Successfully processed 1000 files
 Final data shape: (1000, 1, 128, 128)
 
-Step 4: Training VAE...
+Step 4: Training convolutional VAE...
 Epoch 1/100: Loss: 0.1234 | Recon: 0.1000 | KL: 0.0234
-Best bsrbfkan-gelu-gated-vae model saved.
+Best VAE model saved.
 
 Step 8: Generating high-quality deepfakes...
 Generated deepfake variation 1/1 (noise=0.0)...
@@ -883,23 +882,17 @@ Generated deepfake variation 1/1 (noise=0.0)...
 Files saved:
 - original_reference_improved.wav
 - high_quality_deepfake_1_noise_0.0.wav
+```
 
-Performance Summary for bsrbfkan-gelu-gated-vae:
-Best deepfake metrics:
-  MSE: 0.012300
-  Cosine Similarity: 0.987600
-  Correlation: 0.990100
+## Notes
+- Ensure sufficient GPU memory for training (CUDA out-of-memory errors are mitigated with `torch.cuda.empty_cache()` and gradient accumulation).
+- The dataset directory (`/kaggle/input/vae128-ctrsdd/spec_128`) must contain valid spectrogram images.
+- Adjust `height`, `width`, and other hyperparameters in `AudioDeepfakeGenerator` for different dataset requirements.
+- The code includes a reference to `KANLinear`, which is not defined in the provided code. Ensure compatibility or remove this reference if not using a custom KANLinear layer.
 
-Notes
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-Ensure sufficient GPU memory for training (CUDA out-of-memory errors are mitigated with torch.cuda.empty_cache() and gradient accumulation).
-The dataset directory (/kaggle/input/vae128-ctrsdd/spec_128) must contain valid spectrogram images.
-Adjust height, width, and other hyperparameters in AudioDeepfakeGenerator for different dataset requirements.
-Select the desired VAE variant by setting model_type in the AudioDeepfakeGenerator initialization.
-
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
-Acknowledgments
-
-Built with PyTorch, librosa, and other open-source libraries.
-Inspired by deep learning techniques for audio synthesis and deepfake generation.
+## Acknowledgments
+- Built with PyTorch, librosa, and other open-source libraries.
+- Inspired by deep learning techniques for audio synthesis and deepfake generation.
