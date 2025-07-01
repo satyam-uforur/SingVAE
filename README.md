@@ -1,16 +1,18 @@
 # Advanced Audio Deepfake/SingFake Generator using Multiple Variational Autoencoder (VAE) Variants
 ![Copy of APSIPA (8)](https://github.com/user-attachments/assets/d30043c0-af5b-4def-98b5-7304efaca6dd)
 
-This project implements an end-to-end pipeline for generating deepfake audio using a Variational Autoencoder (VAE) trained on Mel spectrograms. The system processes audio data, trains a convolutional VAE, generates deepfake variations, and evaluates the results with visualizations and metrics.
+This project implements an end-to-end pipeline for generating deepfake audio using a Variational Autoencoder (VAE) and its enhanced variants (`bsrbfkan-gelu-gated-vae`, `bsrbfkan-vae`, `chebyshevkanlinear-gelu-gated-vae`, `chebyshevkanlinear-vae`, `gelu-gated-vae`, `vae-simple`, `wavkan-gelu-gated-vae`, `wavkan-vae`), trained on Mel spectrograms. The system processes audio data, trains models, generates deepfake variations, and evaluates results with visualizations and metrics. Caching mechanisms enhance performance by reducing redundant computations.
 
 ## Features
 
-- **Audio Preprocessing**: Converts audio files to Mel spectrograms with configurable parameters (sample rate, n_mels, n_fft, hop_length).
-- **VAE Model**: A convolutional VAE with customizable architecture (filters, kernels, strides, latent dimension) for learning audio representations.
-- **Deepfake Generation**: Generates high-quality deepfake audio by adding controlled noise in the latent space.
-- **Evaluation Metrics**: Computes Mean Squared Error (MSE), Cosine Similarity, and Pearson Correlation between original and generated spectrograms.
-- **Visualization**: Displays Mel spectrograms, training loss curves, and comparison plots for original vs. generated audio.
-- **Audio Output**: Saves generated and original audio as WAV files using librosa and soundfile.
+- **Audio Preprocessing**: Converts audio to Mel spectrograms with caching to avoid reprocessing.
+- **VAE Models**: Supports a standard VAE and enhanced variants with specialized layers.
+- **Deepfake Generation**: Produces high-quality deepfakes with controlled noise in the latent space.
+- **Evaluation Metrics**: Computes MSE, Cosine Similarity, and Pearson Correlation.
+- **Visualization**: Displays Mel spectrograms and comparison plots.
+- **Audio Output**: Saves audio as WAV files.
+- **Performance Optimization**: Includes caching for preprocessing and model training.
+
 
 ## Installation
 
@@ -45,7 +47,9 @@ The code automatically detects and uses CUDA if available. Ensure CUDA is instal
    - **Model Checkpoints**: Saved in the `models/` directory (`best_vae_model.pth`).
    - **Audio Files**: Original and generated WAV files (e.g., `original_reference_improved.wav`, `high_quality_deepfake_X_noise_Y.wav`).
    - **Visualizations**: Plots of Mel spectrograms, training loss, and comparison between original and generated spectrograms.
-
+## All codes are present in IPYND Folder
+![bbae818f-51d1-4273-9d8b-f68170f8176f](https://github.com/user-attachments/assets/e152066d-3bf9-4e75-a9b5-23ef94e869b0)
+Now below is code snippet with all class
 ## Code Snippets
 ## RadialBasisFunction Class
 Implements a radial basis function layer for BSRBFKANLinear.
