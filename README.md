@@ -50,6 +50,7 @@ Visualizations: Plots of Mel spectrograms, training loss curves, and comparison 
 Code Snippets
 RadialBasisFunction Class
 Implements a radial basis function layer for BSRBFKANLinear.
+```python
 class RadialBasisFunction(nn.Module):
     def __init__(self, low, high, num_centers):
         super().__init__()
@@ -59,9 +60,10 @@ class RadialBasisFunction(nn.Module):
     def forward(self, x):
         x = x.unsqueeze(-1)
         return torch.exp(-self.gamma * (x - self.centers) ** 2)
-
+```
 BSRBFKANLinear Class
 Combines B-splines and radial basis functions for enhanced linear transformation.
+```python
 class BSRBFKANLinear(nn.Module):
     def __init__(self, input_dim: int, output_dim: int, grid_size: int = 3, spline_order: int = 2, base_activation=nn.SiLU, grid_range=[-1.0, 1.0]):
         super().__init__()
@@ -101,9 +103,10 @@ class BSRBFKANLinear(nn.Module):
         combined_basis = bspline_out + rbf_out
         nonlinear_out = F.linear(combined_basis, self.spline_weight)
         return base_out + nonlinear_out
-
+```
 GeluGatedLayer Class
 Implements a GELU-activated gated layer for VAE enhancements.
+```python
 class GeluGatedLayer(nn.Module):
     def __init__(self, input_dim, output_dim, bias=True):
         super(GeluGatedLayer, self).__init__()
@@ -113,9 +116,10 @@ class GeluGatedLayer(nn.Module):
     def forward(self, src):
         output = self.activation(self.input_linear(src))
         return output
-
+```
 ChebyshevKANLinear Class
 Utilizes Chebyshev polynomials for advanced linear transformations with normalization.
+```python
 class ChebyshevKANLinear(nn.Module):
     def __init__(self, in_features, out_features, degree=5, scale_base=1.0, scale_cheb=1.0, device='cuda'):
         super().__init__()
@@ -155,9 +159,10 @@ class ChebyshevKANLinear(nn.Module):
         if torch.isnan(output).any():
             print("Warning: NaN detected in ChebyshevKANLinear output")
         return output
-
+```
 WavKANLinear Class
 Implements a wavelet-based KAN linear layer with chunked processing.
+```python
 class KANLinear(nn.Module):
     def __init__(self, in_features, out_features, wavelet_type='dog', chunk_size=1024):
         super(KANLinear, self).__init__()
@@ -205,6 +210,8 @@ class KANLinear(nn.Module):
         del wavelet_output, base_output
         torch.cuda.empty_cache()
         return combined_output
+```
+
 ## Architecture Overview
 
 - **Encoder**: Transforms Mel spectrograms into a latent space using convolutional layers, with optional custom layers for enhanced variants. Outputs mean and log-variance for variational sampling.
@@ -213,6 +220,7 @@ class KANLinear(nn.Module):
 
 ImprovedAudioVAE Class (Base VAE)
 Defines the base VAE architecture used across variants.
+```python
 class ImprovedAudioVAE(nn.Module):
     def __init__(self, input_shape, conv_filters=(16, 32, 64, 128), conv_kernels=(3, 3, 3, 3),
                  conv_strides=(1, 2, 2, 2), latent_dim=256, dropout_rate=0.3, custom_layer=None):
@@ -326,7 +334,8 @@ class ImprovedAudioVAE(nn.Module):
         z = self.reparameterize(mu, logvar)
         recon_x = self.decode(z)
         return recon_x, mu, logvar
-
+```
+```python
 AudioProcessor Class
 Handles Mel spectrogram conversion and visualization.
 class AudioProcessor:
@@ -350,7 +359,8 @@ class AudioProcessor:
         plt.title(title)
         plt.tight_layout()
         plt.show()
-
+```
+```python
 AudioDataset Class
 PyTorch Dataset for loading Mel spectrograms.
 class AudioDataset(Dataset):
@@ -362,9 +372,11 @@ class AudioDataset(Dataset):
 
     def __getitem__(self, idx):
         return torch.FloatTensor(self.mel_spectrograms[idx])
+```
 
 AudioDeepfakeGenerator Class
 Orchestrates the full workflow for deepfake generation.
+```python
 class AudioDeepfakeGenerator:
     def __init__(self, height=128, width=128, model_type="vae-simple"):
         self.processor = AudioProcessor(n_mels=height, sr=22050, n_fft=2048, hop_length=512)
@@ -664,9 +676,11 @@ class AudioDeepfakeGenerator:
         audio = self.processor.mel_spectrogram_to_audio(mel_spec)
         sf.write(filename, audio, sr)
         print(f"Audio saved as: {filename}")
+```
 
 Main Function
 Orchestrates the workflow for data loading, training, and generation.
+```python
 def get_image_files(directory):
     image_files = []
     valid_extensions = ('.png', '.jpg', '.jpeg')
@@ -685,7 +699,8 @@ def get_image_files(directory):
                 except Exception as e:
                     print(f"Error loading image {file_path}: {e}")
     return image_files
-
+```
+```python
 def main():
     torch.cuda.empty_cache()
     model_types = ["bsrbfkan-gelu-gated-vae", "bsrbfkan-vae", "chebyshevkanlinear-gelu-gated-vae", "chebyshevkanlinear-vae", "gelu-gated-vae", "vae-simple", "wavkan-gelu-gated-vae", "wavkan-vae"]
@@ -809,6 +824,7 @@ def main():
 if __name__ == "__main__":
     torch.cuda.empty_cache()
     main()
+```
 
 Project Structure
 
