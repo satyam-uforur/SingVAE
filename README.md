@@ -49,8 +49,7 @@ The code automatically detects and uses CUDA if available. Ensure CUDA is instal
    - **Visualizations**: Plots of Mel spectrograms, training loss, and comparison between original and generated spectrograms.
 ## All codes are present in IPYND Folder
 ![bbae818f-51d1-4273-9d8b-f68170f8176f](https://github.com/user-attachments/assets/27386a4e-acec-4803-8eca-2edb5ea7a2de)
-
-Now below is code snippet with all class
+Below is code snippet with all class
 ## Code Snippets
 ## RadialBasisFunction Class
 Implements a radial basis function layer for BSRBFKANLinear.
